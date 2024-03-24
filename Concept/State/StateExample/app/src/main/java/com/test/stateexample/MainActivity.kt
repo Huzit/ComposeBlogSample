@@ -11,6 +11,8 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -23,11 +25,16 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.test.stateexample.ui.theme.StateExampleTheme
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,7 +46,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    LiveDataSample ()
+                    FlowSample ()
                 }
             }
         }
@@ -85,11 +92,22 @@ fun Greeting2() {
 //플로우 예제
 @Composable
 fun FlowSample(){
+    var sampleText by remember { mutableStateOf("아직 안됬어") }
     val a: Flow<String> = flow {
-        delay(1000L)
-        emit("이게 플로우여")
+        while(true) {
+            delay(1000L)
+            emit("이게 플로우여")
+        }
     }
-    a.collectAsState(initial = "")
+    sampleText = a.collectAsStateWithLifecycle(initialValue = "아직 들 됬어").value
+//    sampleText = a.collectAsState(initial = "아직 덜 됬어").value
+    /*LaunchedEffect(key1 = sampleText) {
+        a.collect {
+            sampleText = it
+        }
+    }*/
+    
+    Text(text = sampleText)
 }
 
 //라이브데이터 예제
