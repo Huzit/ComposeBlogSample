@@ -32,4 +32,3 @@ androidx-lifecycle-runtime-compose-flow = {group = "androidx.lifecycle", name = 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
 jetbrainsKotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
-
