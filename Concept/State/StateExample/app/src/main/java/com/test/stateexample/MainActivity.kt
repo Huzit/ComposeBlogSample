@@ -45,7 +45,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    ListSaverSnippet()
+                    RememberKeySnippet()
                 }
             }
         }
@@ -219,6 +219,25 @@ fun ListSaverSnippet(){
     }
     
     Text(text = selectedCity.value.toString())
+}
+
+@Composable
+fun RememberKeySnippet(){
+    var a by remember {
+        mutableStateOf(1)
+    }
+
+    var b by remember {
+        mutableStateOf(false)
+    }
+    remember(key1 = b) {
+        a++
+    }
+    Text(text = a.toString())
+
+    Button(onClick = { b = !b }) {
+        Text(text = "강제 리컴포지션 실행")
+    }
 }
 
 
